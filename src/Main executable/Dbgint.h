@@ -28,18 +28,19 @@
 #include <crtdbg.h>
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif  /* __cplusplus */
 
 #ifndef _DEBUG
 
- /****************************************************************************
- *
- * Debug OFF
- * Debug OFF
- * Debug OFF
- *
- ***************************************************************************/
+	/****************************************************************************
+	*
+	* Debug OFF
+	* Debug OFF
+	* Debug OFF
+	*
+	***************************************************************************/
 
 #ifdef __cplusplus
 
@@ -86,13 +87,13 @@ extern "C" {
 #else  /* _DEBUG */
 
 
- /****************************************************************************
- *
- * Debug ON
- * Debug ON
- * Debug ON
- *
- ***************************************************************************/
+	/****************************************************************************
+	*
+	* Debug ON
+	* Debug ON
+	* Debug ON
+	*
+	***************************************************************************/
 
 #define _THISFILE   __FILE__
 
@@ -109,94 +110,83 @@ extern "C" {
 #define _free_crt(p)        _free_dbg(p, _CRT_BLOCK)
 #define _msize_crt(p)       _msize_dbg(p, _CRT_BLOCK)
 
-/*
- * Prototypes for malloc, free, realloc, etc are in malloc.h
- */
+	/*
+	 * Prototypes for malloc, free, realloc, etc are in malloc.h
+	 */
 
-void * __cdecl _malloc_base(
-        size_t
-        );
+	void* __cdecl _malloc_base(
+		size_t);
 
-void * __cdecl _nh_malloc_base (
-        size_t,
-        int
-        );
+	void* __cdecl _nh_malloc_base(
+		size_t,
+		int);
 
-void * __cdecl _nh_malloc_dbg (
-        size_t,
-        int,
-        int,
-        const char *,
-        int
-        );
+	void* __cdecl _nh_malloc_dbg(
+		size_t,
+		int,
+		int,
+		const char*,
+		int);
 
-void * __cdecl _heap_alloc_base(
-        size_t
-        );
+	void* __cdecl _heap_alloc_base(
+		size_t);
 
-void * __cdecl _heap_alloc_dbg(
-        size_t,
-        int,
-        const char *,
-        int
-        );
+	void* __cdecl _heap_alloc_dbg(
+		size_t,
+		int,
+		const char*,
+		int);
 
-void * __cdecl _calloc_base(
-        size_t,
-        size_t
-        );
+	void* __cdecl _calloc_base(
+		size_t,
+		size_t);
 
-void * __cdecl _realloc_base(
-        void *,
-        size_t
-        );
+	void* __cdecl _realloc_base(
+		void*,
+		size_t);
 
-void * __cdecl _expand_base(
-        void *,
-        size_t
-        );
+	void* __cdecl _expand_base(
+		void*,
+		size_t);
 
-void __cdecl _free_base(
-        void *
-        );
+	void __cdecl _free_base(
+		void*
+	);
 
-size_t __cdecl _msize_base (
-        void *
-        );
+	size_t __cdecl _msize_base(
+		void*
+	);
 
 #ifdef _MT
 
-/*
- * Prototypes and macros for multi-thread support
- */
+	/*
+	 * Prototypes and macros for multi-thread support
+	 */
 
 
-void * __cdecl _calloc_dbg_lk(
-        size_t,
-        size_t,
-        int,
-        char *,
-        int
-        );
+	void* __cdecl _calloc_dbg_lk(
+		size_t,
+		size_t,
+		int,
+		char*,
+		int);
 
 
-void * __cdecl _realloc_dbg_lk(
-        void *,
-        size_t,
-        int,
-        const char *,
-        int
-        );
+	void* __cdecl _realloc_dbg_lk(
+		void*,
+		size_t,
+		int,
+		const char*,
+		int);
 
 
-void __cdecl _free_base_lk(
-        void *
-        );
+	void __cdecl _free_base_lk(
+		void*
+	);
 
-void __cdecl _free_dbg_lk(
-        void *,
-        int
-        );
+	void __cdecl _free_dbg_lk(
+		void*,
+		int);
 
 #else  /* _MT */
 
@@ -207,55 +197,53 @@ void __cdecl _free_dbg_lk(
 
 #endif  /* _MT */
 
-/*
- * For diagnostic purpose, blocks are allocated with extra information and
- * stored in a doubly-linked list.  This makes all blocks registered with
- * how big they are, when they were allocated, and what they are used for.
- */
+	/*
+	 * For diagnostic purpose, blocks are allocated with extra information and
+	 * stored in a doubly-linked list.  This makes all blocks registered with
+	 * how big they are, when they were allocated, and what they are used for.
+	 */
 
 #define nNoMansLandSize 4
 
-typedef struct _CrtMemBlockHeader
-{
-        struct _CrtMemBlockHeader * pBlockHeaderNext;
-        struct _CrtMemBlockHeader * pBlockHeaderPrev;
-        char *                      szFileName;
-        int                         nLine;
-        size_t                      nDataSize;
-        int                         nBlockUse;
-        long                        lRequest;
-        unsigned char               gap[nNoMansLandSize];
-        /* followed by:
-         *  unsigned char           data[nDataSize];
-         *  unsigned char           anotherGap[nNoMansLandSize];
-         */
-} _CrtMemBlockHeader;
+	typedef struct _CrtMemBlockHeader
+	{
+		struct _CrtMemBlockHeader* pBlockHeaderNext;
+		struct _CrtMemBlockHeader* pBlockHeaderPrev;
+		char* szFileName;
+		int nLine;
+		size_t nDataSize;
+		int nBlockUse;
+		long lRequest;
+		unsigned char gap[nNoMansLandSize];
+		/* followed by:
+		 *  unsigned char           data[nDataSize];
+		 *  unsigned char           anotherGap[nNoMansLandSize];
+		 */
+	} _CrtMemBlockHeader;
 
 #define pbData(pblock) ((unsigned char *)((_CrtMemBlockHeader *)pblock + 1))
 #define pHdr(pbData) (((_CrtMemBlockHeader *)pbData)-1)
 
 
-_CRTIMP void __cdecl _CrtSetDbgBlockType(
-        void *,
-        int
-        );
+	_CRTIMP void __cdecl _CrtSetDbgBlockType(
+		void*,
+		int);
 
 #define _BLOCK_TYPE_IS_VALID(use) (_BLOCK_TYPE(use) == _CLIENT_BLOCK || \
                                               (use) == _NORMAL_BLOCK || \
                                    _BLOCK_TYPE(use) == _CRT_BLOCK    || \
                                               (use) == _IGNORE_BLOCK)
 
-extern _CRT_ALLOC_HOOK _pfnAllocHook; /* defined in dbghook.c */
+	extern _CRT_ALLOC_HOOK _pfnAllocHook; /* defined in dbghook.c */
 
-int __cdecl _CrtDefaultAllocHook(
-        int,
-        void *,
-        size_t,
-        int,
-        long,
-        const unsigned char *,
-        int
-        );
+	int __cdecl _CrtDefaultAllocHook(
+		int,
+		void*,
+		size_t,
+		int,
+		long,
+		const unsigned char*,
+		int);
 
 #endif  /* _DEBUG */
 
